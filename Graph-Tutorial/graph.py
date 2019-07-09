@@ -99,6 +99,16 @@ class Graph:
         """
         return iter(self.vertList.values())
 
+    def BFS(self, vertex, n):
+        if (self.vertList[vertex]):
+            node_list = [vertex]
+
+            def bfs(start):
+                pass
+
+        bfs(vertex)
+        return node_list
+
 
 if __name__ == "__main__":
 
