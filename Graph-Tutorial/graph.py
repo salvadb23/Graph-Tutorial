@@ -4,6 +4,8 @@
 A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
+# TODO: Go over mistake in addNeighborhood, addVertex, addEdge
+
 
 class Vertex(object):
 
@@ -63,7 +65,8 @@ class Graph:
         """
         self.numVertices += 1
         newVertex = Vertex(key)
-        self.vertList[newVertex] = []
+        self.vertList[key] = newVertex
+
         return newVertex
 
     def getVertex(self, vertex):
@@ -73,13 +76,18 @@ class Graph:
     def addEdge(self, vertexOne, vertexTwo, cost=0):
         """add an edge from vertex f to vertex t with a cost
         """
-        # TODO if either vertex is not in the graph,
+        if self.vertList[vertexOne] is None:
+            self.addVertex(vertexTwo)
+        elif self.vertList[vertexTwo] is None:
+            self.addVertex(vertexTwo)
+        else:
+            self.vertList[vertexOne].addNeighbor(self.vertList[vertexTwo])
+            self.vertList[vertexTwo].addNeighbor(self.vertList[vertexOne])
 
-        # add it - or return an error (choice is up to you).
         # TODO if both vertices in the graph, add the
         # edge by making t a neighbor of f
         # and using the addNeighbor method of the Vertex class.
-        # Hint: the vertex f is stored in self.vertList[f].
+        # Hint: the vertexOne is stored in self.vertList[f].
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -109,12 +117,9 @@ if __name__ == "__main__":
     g.addVertex("Erika")
     g.addVertex("Deontae")
     g.addVertex('Xavier')
+    g.addEdge('William', 'Salvador')
+    print(g.getVertices())
 
-    vertexOne = Vertex('hey')
-    vertexTwo = Vertex('howdy')
-    vertexThree = Vertex('Hello')
-    vertexOne.addNeighbor(vertexTwo, 10)
-    vertexOne.getEdgeWeight(vertexTwo)
     # Add connections (non weighted edges for now)
 
     g.addEdge("William", "Karen")
@@ -154,21 +159,18 @@ if __name__ == "__main__":
 
     g.addEdge('Xavier', 'Erika')
     g.addEdge('Xavier', 'Zakye')
-    g.addEdge('Xavier', 'Deonte')
+    g.addEdge('Xavier', 'Deontae')
     g.addEdge('Xavier', 'Zakye')
     g.addEdge('Xavier', 'Karen')
     g.addEdge('Xavier', 'Hannah')
     g.addEdge('Xavier', 'Jordan')
 
-    print(g)
 
-    # Challenge 1: Output the vertices & edges
-    # Print vertices
-    '''
+# Challenge 1: Output the vertices & edges
+# Print vertices
     print("The vertices are: ", g.getVertices(), "\n")
 
     print("The edges are: ")
     for v in g:
         for w in v.getNeighbors():
             print("( %s , %s )" % (v.getId(), w.getId()))
-    '''
