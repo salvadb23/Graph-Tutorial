@@ -1,10 +1,11 @@
 #!python
 
-""" Vertex Class
+"""
+Vertex Class
 A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
-# TODO: Go over mistake in addNeighborhood, addVertex, addEdge
+from collections import deque
 
 
 class Vertex(object):
@@ -41,12 +42,6 @@ class Vertex(object):
         return self.neighbors[vertex]
 
 
-""" Graph Class
-A class demonstrating the essential
-facts and functionalities of graphs.
-"""
-
-
 class Graph:
     def __init__(self):
         """ initializes a graph object with an empty dictionary.
@@ -77,17 +72,12 @@ class Graph:
         """add an edge from vertex f to vertex t with a cost
         """
         if self.vertList[vertexOne] is None:
-            self.addVertex(vertexTwo)
+            self.addVertex(vertexOne)
         elif self.vertList[vertexTwo] is None:
             self.addVertex(vertexTwo)
         else:
             self.vertList[vertexOne].addNeighbor(self.vertList[vertexTwo])
             self.vertList[vertexTwo].addNeighbor(self.vertList[vertexOne])
-
-        # TODO if both vertices in the graph, add the
-        # edge by making t a neighbor of f
-        # and using the addNeighbor method of the Vertex class.
-        # Hint: the vertexOne is stored in self.vertList[f].
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -101,13 +91,22 @@ class Graph:
 
     def BFS(self, vertex, n):
         if (self.vertList[vertex]):
-            node_list = [vertex]
+            vertex = self.vertList[vertex]
+            queue = deque([vertex])
+            results = []
+            visited = {}
 
-            def bfs(start):
-                pass
-
-        bfs(vertex)
-        return node_list
+            while len(queue):
+                current_element = queue.popleft()
+                visited[current_element.id] = True
+                results.append(current_element.id)
+                key = current_element.id
+                for neighbor in self.vertList[key].neighbors:
+                    print(neighbor)
+                if neighbor not in visited:
+                    visited[neighbor] = True
+                    queue.append(neighbor)
+            return results
 
 
 if __name__ == "__main__":
@@ -128,7 +127,6 @@ if __name__ == "__main__":
     g.addVertex("Deontae")
     g.addVertex('Xavier')
     g.addEdge('William', 'Salvador')
-    print(g.getVertices())
 
     # Add connections (non weighted edges for now)
 
@@ -174,13 +172,15 @@ if __name__ == "__main__":
     g.addEdge('Xavier', 'Karen')
     g.addEdge('Xavier', 'Hannah')
     g.addEdge('Xavier', 'Jordan')
+    bfs = g.BFS('William', 2)
 
-
+'''
 # Challenge 1: Output the vertices & edges
 # Print vertices
-    print("The vertices are: ", g.getVertices(), "\n")
+print("The vertices are: ", g.getVertices(), "\n")
 
-    print("The edges are: ")
-    for v in g:
-        for w in v.getNeighbors():
-            print("( %s , %s )" % (v.getId(), w.getId()))
+print("The edges are: ")
+for v in g:
+    for w in v.getNeighbors():
+        print("( %s , %s )" % (v.getId(), w.getId()))
+'''
