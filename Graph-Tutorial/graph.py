@@ -95,6 +95,7 @@ class Graph:
             queue = deque([vertex])
             results = []
             visited = {}
+            visited[vertex] = True
 
             while len(queue):
                 current_element = queue.popleft()
@@ -102,11 +103,13 @@ class Graph:
                 results.append(current_element.id)
                 key = current_element.id
                 for neighbor in self.vertList[key].neighbors:
-                    print(neighbor)
-                if neighbor not in visited:
-                    visited[neighbor] = True
-                    queue.append(neighbor)
+                    if neighbor not in visited:
+                        visited[neighbor] = True
+                        queue.append(neighbor)
             return results
+
+    def findPath(self, vertexOne, vertexTwo):
+        pass
 
 
 if __name__ == "__main__":
@@ -126,10 +129,10 @@ if __name__ == "__main__":
     g.addVertex("Erika")
     g.addVertex("Deontae")
     g.addVertex('Xavier')
-    g.addEdge('William', 'Salvador')
 
     # Add connections (non weighted edges for now)
 
+    g.addEdge('William', 'Salvador')
     g.addEdge("William", "Karen")
     g.addEdge("William", "Erika")
     g.addEdge("William", "Hannah")
@@ -172,7 +175,14 @@ if __name__ == "__main__":
     g.addEdge('Xavier', 'Karen')
     g.addEdge('Xavier', 'Hannah')
     g.addEdge('Xavier', 'Jordan')
+
+    g.addVertex('Hannah')
+    g.addVertex('Ciara')
+
+    g.addEdge('Hannah', 'Ciara')
+
     bfs = g.BFS('William', 2)
+    print(bfs)
 
 '''
 # Challenge 1: Output the vertices & edges
