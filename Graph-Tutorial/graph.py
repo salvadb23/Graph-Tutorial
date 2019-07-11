@@ -89,23 +89,29 @@ class Graph:
         """
         return iter(self.vertList.values())
 
-    def BFS(self, vertex, n):
+    def BFS(self, vertex, n=0):
         if (self.vertList[vertex]):
-            vertex = self.vertList[vertex]
-            queue = deque([vertex])
+            iteration = 0
+            vertexObj = self.vertList[vertex]
+            queue = deque([(vertexObj, iteration)])
             results = []
             visited = {}
             visited[vertex] = True
 
             while len(queue):
-                current_element = queue.popleft()
+                (current_element, iteration) = queue.popleft()
+                if iteration > n:
+                    break
+                elif iteration is n:
+                    results.append(current_element.id)
+
                 visited[current_element.id] = True
-                results.append(current_element.id)
                 key = current_element.id
                 for neighbor in self.vertList[key].neighbors:
-                    if neighbor not in visited:
-                        visited[neighbor] = True
-                        queue.append(neighbor)
+                    if neighbor.id not in visited:
+                        visited[neighbor.id] = True
+                        queue.append((neighbor, iteration + 1))
+
             return results
 
     def findPath(self, vertexOne, vertexTwo):
@@ -178,11 +184,14 @@ if __name__ == "__main__":
 
     g.addVertex('Hannah')
     g.addVertex('Ciara')
+    g.addVertex('Kyle')
 
     g.addEdge('Hannah', 'Ciara')
+    g.addEdge('Ciara', 'Kyle')
 
-    bfs = g.BFS('William', 2)
+    bfs = g.BFS('William', 0)
     print(bfs)
+    print(g)
 
 '''
 # Challenge 1: Output the vertices & edges
