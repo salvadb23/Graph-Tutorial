@@ -6,6 +6,8 @@ A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
 from collections import deque
+from sys import argv
+import re
 
 
 class Vertex(object):
@@ -76,8 +78,8 @@ class Graph:
         elif self.vertList[vertexTwo] is None:
             self.addVertex(vertexTwo)
         else:
-            self.vertList[vertexOne].addNeighbor(self.vertList[vertexTwo])
-            self.vertList[vertexTwo].addNeighbor(self.vertList[vertexOne])
+            self.vertList[vertexOne].addNeighbor(
+                self.vertList[vertexTwo], cost)
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -90,6 +92,40 @@ class Graph:
         return iter(self.vertList.values())
 
 
+def parse_data():
+    vertices = open(argv[1], 'r')
+    graph_data = vertices.read().split()
+    vertices.close()
+    return graph_data
+
+
+def create_graph(graph_data):
+    if graph_data[0] is 'G':
+        graph = Graph()
+
+    for vertex in graph_data[1].split(','):
+        graph.addVertex(vertex)
+
+    counter = 0
+
+    for word in graph_data[2:]:
+        counter += 1
+        graph.addEdge(word[1], word[3],
+                      word[5:].replace(')', ''))
+
+    print("# Vertices:", len(graph.getVertices()))
+    print("# Edges: ", counter, "\n")
+    print("Edge List:")
+    for v in graph:
+        for w in v.neighbors:
+            print("(%s ,%s, %s)" %
+                  (v.getId(), w.getId(), v.getEdgeWeight(w)))
+
+    return graph
+
+
+data = parse_data()
+graph = create_graph(data)
 if __name__ == "__main__":
 
     # Challenge 1: Create the graph
@@ -161,7 +197,7 @@ if __name__ == "__main__":
     g.addEdge('Hannah', 'Ciara')
     g.addEdge('Ciara', 'Kyle')
 
- 
+
 '''
 # Challenge 1: Output the vertices & edges
 # Print vertices
