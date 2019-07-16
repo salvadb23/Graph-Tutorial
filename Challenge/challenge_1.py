@@ -5,9 +5,7 @@ Vertex Class
 A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
-from collections import deque
 from sys import argv
-import re
 
 
 class Vertex(object):

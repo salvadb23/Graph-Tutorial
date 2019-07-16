@@ -6,6 +6,7 @@ A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
 from collections import deque
+from sys import argv
 
 
 class Vertex(object):
@@ -29,7 +30,7 @@ class Vertex(object):
         """output the list of neighbors of this vertex"""
         return str(self.id) + " adjancent to " + str([x.id for x in self.neighbors])
 
-    def getNeighbors(self):
+    def get_neighbors(self):
         """return the neighbors of this vertex"""
         return self.neighbors
 
@@ -77,7 +78,6 @@ class Graph:
             self.addVertex(vertexTwo)
         else:
             self.vertList[vertexOne].addNeighbor(self.vertList[vertexTwo])
-            self.vertList[vertexTwo].addNeighbor(self.vertList[vertexOne])
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -89,32 +89,56 @@ class Graph:
         """
         return iter(self.vertList.values())
 
-    def BFS(self, vertex, n=0):
-        if (self.vertList[vertex]):
-            iteration = 0
-            vertexObj = self.vertList[vertex]
-            queue = deque([(vertexObj, iteration)])
-            results = []
-            visited = {}
-            visited[vertex] = True
 
-            while len(queue):
-                (current_element, iteration) = queue.popleft()
-                if iteration > n:
-                    break
-                elif iteration is n:
-                    results.append(current_element.id)
+def parse_data():
+    vertices = open(argv[1], 'r')
+    graph_data = vertices.read().split()
+    vertices.close()
+    return graph_data
 
-                visited[current_element.id] = True
-                key = current_element.id
-                for neighbor in self.vertList[key].neighbors:
-                    if neighbor.id not in visited:
-                        visited[neighbor.id] = True
-                        queue.append((neighbor, iteration + 1))
 
-            return results
+def create_graph(graph_data):
+    if graph_data[0] is 'G':
+        graph = Graph()
 
-   
+    for vertex in graph_data[1].split(','):
+        graph.addVertex(vertex)
+
+    counter = 0
+
+    for word in graph_data[2:]:
+        counter += 1
+        graph.addEdge(word[1], word[3],
+                      word[5:].replace(')', ''))
+
+    print("# Vertices:", len(graph.getVertices()))
+    print("# Edges: ", counter, "\n")
+    print("Edge List:")
+    for v in graph:
+        for w in v.neighbors:
+            print("(%s ,%s, %s)" %
+                  (v.getId(), w.getId(), v.getEdgeWeight(w)))
+
+    return graph
+
+
+def BFS():
+
+    vertex_one = argv[2]
+    vertex_two = argv[3]
+
+    queue = deque([vertex_one])
+    results = []
+    visited = {}
+
+    visited[vertex_one] = True
+
+    while len(queue) or vertex_one not in results:
+        pass
+
+
+BFS()
+'''
 
 if __name__ == "__main__":
 
@@ -191,7 +215,7 @@ if __name__ == "__main__":
     print(bfs)
     print(g)
 
-'''
+
 # Challenge 1: Output the vertices & edges
 # Print vertices
 print("The vertices are: ", g.getVertices(), "\n")
