@@ -147,13 +147,16 @@ def shortest_path(graph):
 
 
 def print_shortest_path(graph):
-    pass
+    path = shortest_path(graph)
+    for key in path.keys():
+        print(key, end=",")
+    print('\nNumber of edges: {}'.format(len(path)-1))
 
 
 graph_data = parse_data()
 graph = create_graph(graph_data)[0]
 
-print(shortest_path(graph))
+print_shortest_path(graph)
 
 '''
 if __name__ == "__main__":
