@@ -153,10 +153,20 @@ def print_shortest_path(graph):
     print('\nNumber of edges: {}'.format(len(path)-1))
 
 
-graph_data = parse_data()
-graph = create_graph(graph_data)[0]
+# Almost done
+def DFS(graph):
+    vertexOne = argv[3]
+    visited = {}
+    stack = [vertexOne]
 
-print_shortest_path(graph)
+    while len(stack):
+        current_element = stack.pop()
+        if current_element not in visited:
+            visited[current_element] = True
+            for neighbor in graph[current_element.getID()].neighbors:
+                if neighbor not in visited:
+                    stack.append(neighbor.getID())
+
 
 '''
 if __name__ == "__main__":
