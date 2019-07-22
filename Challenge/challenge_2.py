@@ -5,8 +5,8 @@ Vertex Class
 A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
-from collections import deque
 from sys import argv
+from collections import deque
 
 
 class Vertex(object):
@@ -30,7 +30,7 @@ class Vertex(object):
         """output the list of neighbors of this vertex"""
         return str(self.id) + " adjancent to " + str([x.id for x in self.neighbors])
 
-    def get_neighbors(self):
+    def getNeighbors(self):
         """return the neighbors of this vertex"""
         return self.neighbors
 
@@ -77,7 +77,8 @@ class Graph:
         elif self.vertList[vertexTwo] is None:
             self.addVertex(vertexTwo)
         else:
-            self.vertList[vertexOne].addNeighbor(self.vertList[vertexTwo])
+            self.vertList[vertexOne].addNeighbor(
+                self.vertList[vertexTwo], cost)
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -111,6 +112,10 @@ def create_graph(graph_data):
         graph.addEdge(word[1], word[3],
                       word[5:].replace(')', ''))
 
+    return graph, counter
+
+
+def print_graph(graph, counter):
     print("# Vertices:", len(graph.getVertices()))
     print("# Edges: ", counter, "\n")
     print("Edge List:")
@@ -119,27 +124,38 @@ def create_graph(graph_data):
             print("(%s ,%s, %s)" %
                   (v.getId(), w.getId(), v.getEdgeWeight(w)))
 
-    return graph
 
-
-def BFS():
-
-    vertex_one = argv[2]
-    vertex_two = argv[3]
-
-    queue = deque([vertex_one])
-    results = []
+def shortest_path(graph):
+    vertexOne = argv[2]
+    vertexTwo = argv[3]
+    queue = deque([vertexOne])
     visited = {}
+    visited[vertexOne] = True
 
-    visited[vertex_one] = True
+    while len(queue):
+        current_element = queue.popleft()
 
-    while len(queue) or vertex_one not in results:
-        pass
+        visited[current_element] = True
+        for neighbor in graph.vertList[current_element].neighbors:
+            if neighbor.getId() is vertexTwo:
+                visited[vertexTwo] = True
+                return visited
+            if neighbor.getId() not in visited:
+                queue.append((neighbor.getId()))
+
+    return visited
 
 
-BFS()
+def print_shortest_path(graph):
+    pass
+
+
+graph_data = parse_data()
+graph = create_graph(graph_data)[0]
+
+print(shortest_path(graph))
+
 '''
-
 if __name__ == "__main__":
 
     # Challenge 1: Create the graph
@@ -211,9 +227,6 @@ if __name__ == "__main__":
     g.addEdge('Hannah', 'Ciara')
     g.addEdge('Ciara', 'Kyle')
 
-    bfs = g.BFS('William', 0)
-    print(bfs)
-    print(g)
 
 
 # Challenge 1: Output the vertices & edges

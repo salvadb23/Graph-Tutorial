@@ -111,6 +111,10 @@ def create_graph(graph_data):
         graph.addEdge(word[1], word[3],
                       word[5:].replace(')', ''))
 
+    return graph, counter
+
+
+def print_graph(graph, counter):
     print("# Vertices:", len(graph.getVertices()))
     print("# Edges: ", counter, "\n")
     print("Edge List:")
@@ -119,11 +123,13 @@ def create_graph(graph_data):
             print("(%s ,%s, %s)" %
                   (v.getId(), w.getId(), v.getEdgeWeight(w)))
 
-    return graph
+
+graph_data = parse_data()
+(graph, counter) = create_graph(graph_data)
+print_graph(graph, counter)
 
 
-data = parse_data()
-graph = create_graph(data)
+'''
 if __name__ == "__main__":
 
     # Challenge 1: Create the graph
@@ -196,7 +202,7 @@ if __name__ == "__main__":
     g.addEdge('Ciara', 'Kyle')
 
 
-'''
+
 # Challenge 1: Output the vertices & edges
 # Print vertices
 print("The vertices are: ", g.getVertices(), "\n")
