@@ -25,10 +25,6 @@ class Vertex(object):
         if (vertex not in self.neighbors):
             self.neighbors[vertex] = weight
 
-    def __str__(self):
-        """output the list of neighbors of this vertex"""
-        return str(self.id) + " adjancent to " + str([x.id for x in self.neighbors])
-
     def getNeighbors(self):
         """return the neighbors of this vertex"""
         return self.neighbors
@@ -71,13 +67,14 @@ class Graph:
     def addEdge(self, vertexOne, vertexTwo, cost=0):
         """add an edge from vertex f to vertex t with a cost
         """
-        if self.vertList[vertexOne] is None:
+
+        if not vertexOne in self.vertList:
             self.addVertex(vertexOne)
-        elif self.vertList[vertexTwo] is None:
+        if not vertexTwo in self.vertList:
             self.addVertex(vertexTwo)
-        else:
-            self.vertList[vertexOne].addNeighbor(
-                self.vertList[vertexTwo], cost)
+
+        self.vertList[vertexOne].addNeighbor(
+            self.vertList[vertexTwo], cost)
 
     def getVertices(self):
         """return all the vertices in the graph"""
@@ -91,6 +88,7 @@ class Graph:
 
 
 def parse_data():
+    '''Enters'''
     vertices = open(argv[1], 'r')
     graph_data = vertices.read().split()
     vertices.close()
@@ -98,8 +96,9 @@ def parse_data():
 
 
 def create_graph(graph_data):
-    if graph_data[0] is 'G':
-        graph = Graph()
+    is_graph = graph_data[0] is 'G'
+
+    graph = Graph()
 
     for vertex in graph_data[1].split(','):
         graph.addVertex(vertex)
@@ -108,8 +107,14 @@ def create_graph(graph_data):
 
     for word in graph_data[2:]:
         counter += 1
-        graph.addEdge(word[1], word[3],
-                      word[5:].replace(')', ''))
+        if is_graph:
+            graph.addEdge(word[3], word[1],
+                          word[5:].replace(')', ''))
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
+        else:
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
 
     return graph, counter
 
