@@ -73,24 +73,26 @@ def print_shortest_path(graph):
     print('\nNumber of edges: {}'.format(len(path)-1))
 
 
+'''Ask soul why are these giving different outputs'''
+
+
 def rescursive_dfs(graph, v):
-    result = [v]
+    vertexObj = graph.vertList[v]
+    result = [vertexObj]
     visited = {}
 
-    def dfs(start):
-        current_vertex = result.pop()
-        visited[start] = True
-        vertex = graph.vertList[current_vertex]
+    def dfs(vertex):
+        visited[vertex.getId()] = True
         for neighbor in vertex.neighbors:
             if neighbor not in visited:
-                result.append(neighbor.getId())
-                dfs(neighbor.getId())
-    dfs(v)
+                dfs(neighbor)
+    dfs(vertexObj)
 
-    return list(visited.keys())  # What is
+    return list(visited.keys())
 
 
 def dfs(graph, v):
+    '''An algorithm that returns a path of reachable vertices from an initial vertex'''
     vertexObj = graph.vertList[v]
     stack = [vertexObj]
     visited = {}
@@ -101,11 +103,12 @@ def dfs(graph, v):
 
         for neighbor in vertex.neighbors:
             stack.append(neighbor)
+
     return list(visited.keys())
 
 
 graph_data = parse_data()
 (graph, counter) = create_graph(graph_data)
-# result = rescursive_dfs(graph, '1')
-result = dfs(graph, '1')
+result = rescursive_dfs(graph, '1')
+# result = dfs(graph, '1')
 print(result)
