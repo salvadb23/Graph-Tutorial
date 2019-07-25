@@ -86,48 +86,50 @@ class Graph:
         """
         return iter(self.vertList.values())
 
+def parse_data():
+    '''Takes a text file and turns the information into an array -> list'''
+    vertices = open(argv[1], 'r')
+    graph_data = vertices.read().split()
+    vertices.close()
+    return graph_data
+
+
+def create_graph(graph_data):
+    '''Create a graph from an array of graph information'''
+    is_graph = graph_data[0] is 'G'
+
+    graph = Graph()
+
+    for vertex in graph_data[1].split(','):
+        graph.addVertex(vertex)
+
+    counter = 0
+
+    for word in graph_data[2:]:
+        counter += 1
+        if is_graph:
+            graph.addEdge(word[3], word[1],
+                          word[5:].replace(')', ''))
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
+        else:
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
+
+    return graph, counter
+
+
+def print_graph(graph, counter):
+    print("# Vertices:", len(graph.getVertices()))
+    print("# Edges: ", counter, "\n")
+    print("Edge List:")
+    for v in graph:
+        for w in v.neighbors:
+            print("(%s ,%s, %s)" %
+                  (v.getId(), w.getId(), v.getEdgeWeight(w)))
+
 
 if __name__ == "__main__":
-
-    def parse_data():
-        '''Takes a text file and turns the information into an array -> list'''
-        vertices = open(argv[1], 'r')
-        graph_data = vertices.read().split()
-        vertices.close()
-        return graph_data
-
-    def create_graph(graph_data):
-        '''Create a graph from an array of graph information'''
-        is_graph = graph_data[0] is 'G'
-
-        graph = Graph()
-
-        for vertex in graph_data[1].split(','):
-            graph.addVertex(vertex)
-
-        counter = 0
-
-        for word in graph_data[2:]:
-            counter += 1
-            if is_graph:
-                graph.addEdge(word[3], word[1],
-                              word[5:].replace(')', ''))
-                graph.addEdge(word[1], word[3],
-                              word[5:].replace(')', ''))
-            else:
-                graph.addEdge(word[1], word[3],
-                              word[5:].replace(')', ''))
-
-        return graph, counter
-
-    def print_graph(graph, counter):
-        print("# Vertices:", len(graph.getVertices()))
-        print("# Edges: ", counter, "\n")
-        print("Edge List:")
-        for v in graph:
-            for w in v.neighbors:
-                print("(%s ,%s, %s)" %
-                      (v.getId(), w.getId(), v.getEdgeWeight(w)))
 
     graph_data = parse_data()
     graph, counter = create_graph(graph_data)

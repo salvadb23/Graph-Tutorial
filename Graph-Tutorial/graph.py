@@ -138,6 +138,9 @@ class Graph:
 
         return KeyError('{} or {} was not in the graph'.format(vertexOne, vertexTwo))
 
+    def clique(self):
+        pass
+
 
 if __name__ == "__main__":
 
