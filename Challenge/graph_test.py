@@ -38,4 +38,3 @@ class GraphTest(unittest.TestCase):
         lst = ["A", "B", "C", "D"]
         [graph.addVertex(vert) for vert in lst]
         graph.addEdge('A', 'B')
-ce
