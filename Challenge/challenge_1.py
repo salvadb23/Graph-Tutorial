@@ -87,129 +87,48 @@ class Graph:
         return iter(self.vertList.values())
 
 
-def parse_data():
-    '''Takes a text file and turns the information into an array -> list'''
-    vertices = open(argv[1], 'r')
-    graph_data = vertices.read().split()
-    vertices.close()
-    return graph_data
-
-
-def create_graph(graph_data):
-    is_graph = graph_data[0] is 'G'
-
-    graph = Graph()
-
-    for vertex in graph_data[1].split(','):
-        graph.addVertex(vertex)
-
-    counter = 0
-
-    for word in graph_data[2:]:
-        counter += 1
-        if is_graph:
-            graph.addEdge(word[3], word[1],
-                          word[5:].replace(')', ''))
-            graph.addEdge(word[1], word[3],
-                          word[5:].replace(')', ''))
-        else:
-            graph.addEdge(word[1], word[3],
-                          word[5:].replace(')', ''))
-
-    return graph, counter
-
-
-def print_graph(graph, counter):
-    print("# Vertices:", len(graph.getVertices()))
-    print("# Edges: ", counter, "\n")
-    print("Edge List:")
-    for v in graph:
-        for w in v.neighbors:
-            print("(%s ,%s, %s)" %
-                  (v.getId(), w.getId(), v.getEdgeWeight(w)))
-
-
-
-'''
 if __name__ == "__main__":
 
-    # Challenge 1: Create the graph
+    def parse_data():
+        '''Takes a text file and turns the information into an array -> list'''
+        vertices = open(argv[1], 'r')
+        graph_data = vertices.read().split()
+        vertices.close()
+        return graph_data
 
-    g = Graph()
+    def create_graph(graph_data):
+        '''Create a graph from an array of graph information'''
+        is_graph = graph_data[0] is 'G'
 
-    # Add your friends
-    g.addVertex("Karen")
-    g.addVertex("Jordan")
-    g.addVertex("Hannah")
-    g.addVertex("Zakye")
-    g.addVertex("William")
-    g.addVertex("Salvador")
-    g.addVertex("Dacio")
-    g.addVertex("Erika")
-    g.addVertex("Deontae")
-    g.addVertex('Xavier')
+        graph = Graph()
 
-    # Add connections (non weighted edges for now)
+        for vertex in graph_data[1].split(','):
+            graph.addVertex(vertex)
 
-    g.addEdge('William', 'Salvador')
-    g.addEdge("William", "Karen")
-    g.addEdge("William", "Erika")
-    g.addEdge("William", "Hannah")
-    g.addEdge("William", "Jordan")
-    g.addEdge("William", "Hannah")
-    g.addEdge("William", "Dacio")
-    g.addEdge("William", "Salvador")
-    g.addEdge("William", "Xavier")
+        counter = 0
 
-    g.addEdge("Jordan", "Hannah")
-    g.addEdge("Jordan", "Karen")
-    g.addEdge("Jordan", "Zakye")
-    g.addEdge("Jordan", "Deontae")
-    g.addEdge("Jordan", "Xavier")
+        for word in graph_data[2:]:
+            counter += 1
+            if is_graph:
+                graph.addEdge(word[3], word[1],
+                              word[5:].replace(')', ''))
+                graph.addEdge(word[1], word[3],
+                              word[5:].replace(')', ''))
+            else:
+                graph.addEdge(word[1], word[3],
+                              word[5:].replace(')', ''))
 
-    g.addEdge("Hannah", 'Erika')
-    g.addEdge("Hannah", "Jordan")
-    g.addEdge("Hannah", "Karen")
-    g.addEdge("Hannah", "Zakye")
-    g.addEdge("Hannah", "Deontae")
-    g.addEdge("Hannah", "Xavier")
+        return graph, counter
 
-    g.addEdge("Erika", 'Hannah')
-    g.addEdge("Erika", "Jordan")
-    g.addEdge("Erika", "Karen")
-    g.addEdge("Erika", "Zakye")
-    g.addEdge("Erika", "Deontae")
-    g.addEdge("Erika", "Xavier")
+    def print_graph(graph, counter):
+        print("# Vertices:", len(graph.getVertices()))
+        print("# Edges: ", counter, "\n")
+        print("Edge List:")
+        for v in graph:
+            for w in v.neighbors:
+                print("(%s ,%s, %s)" %
+                      (v.getId(), w.getId(), v.getEdgeWeight(w)))
 
-    g.addEdge("Dacio", "Salvador")
-    g.addEdge("Dacio", "Erika")
-
-    g.addEdge("Salvador", "Dacio")
-    g.addEdge("Salvador", "Erika")
-
-    g.addEdge('Xavier', 'Erika')
-    g.addEdge('Xavier', 'Zakye')
-    g.addEdge('Xavier', 'Deontae')
-    g.addEdge('Xavier', 'Zakye')
-    g.addEdge('Xavier', 'Karen')
-    g.addEdge('Xavier', 'Hannah')
-    g.addEdge('Xavier', 'Jordan')
-
-    g.addVertex('Hannah')
-    g.addVertex('Ciara')
-    g.addVertex('Kyle')
-
-    g.addEdge('Hannah', 'Ciara')
-    g.addEdge('Ciara', 'Kyle')
-
-
-
-# Challenge 1: Output the vertices & edges
-# Print vertices
-print("The vertices are: ", g.getVertices(), "\n")
-
-print("The edges are: ")
-for v in g:
-    for w in v.getNeighbors():
-        print("( %s , %s )" % (v.getId(), w.getId()))
-'''
+    graph_data = parse_data()
+    graph, counter = create_graph(graph_data)
+    print_graph(graph, counter)

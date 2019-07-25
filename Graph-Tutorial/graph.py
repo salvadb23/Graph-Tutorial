@@ -89,7 +89,7 @@ class Graph:
         """
         return iter(self.vertList.values())
 
-    def BFS(self, vertex, n=0):
+    def degree_BFS(self, vertex, n=0):
         if (self.vertList[vertex]):
             iteration = 0
             vertexObj = self.vertList[vertex]
@@ -114,8 +114,29 @@ class Graph:
 
             return results
 
-    def findPath(self, vertexOne, vertexTwo):
-        pass
+    def BFS(self, vertex):
+        vertexObj = self.vertList[vertex]
+        queue = deque([vertexObj])
+        visited = {}
+
+        visited[vertexObj.id] = True
+
+        while len(queue):
+            current_item = queue.popleft()
+
+            for neighbor in current_item.neighbors:
+                if neighbor not in visited:
+                    visited[vertex] = True
+                    queue.append(neighbor)
+
+        return vertexObj
+
+    def find_shortest_path(self, vertexOne, vertexTwo):
+        '''Finds the shortest path between two vertices'''
+        if vertexOne in self.vertList and vertexTwo in self.vertList:
+            return self.BFS(vertexOne)
+
+        return KeyError('{} or {} was not in the graph'.format(vertexOne, vertexTwo))
 
 
 if __name__ == "__main__":
@@ -189,17 +210,5 @@ if __name__ == "__main__":
     g.addEdge('Hannah', 'Ciara')
     g.addEdge('Ciara', 'Kyle')
 
-    bfs = g.BFS('William', 0)
-    print(bfs)
-    print(g)
-
-'''
-# Challenge 1: Output the vertices & edges
-# Print vertices
-print("The vertices are: ", g.getVertices(), "\n")
-
-print("The edges are: ")
-for v in g:
-    for w in v.getNeighbors():
-        print("( %s , %s )" % (v.getId(), w.getId()))
-'''
+    result = g.find_shortest_path('William', 'Kyle')
+    print(result)
