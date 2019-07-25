@@ -12,8 +12,9 @@ def parse_data():
 
 
 def create_graph(graph_data):
-    if graph_data[0] is 'G':
-        graph = Graph()
+    is_graph = graph_data[0] is 'G'
+
+    graph = Graph()
 
     for vertex in graph_data[1].split(','):
         graph.addVertex(vertex)
@@ -22,8 +23,14 @@ def create_graph(graph_data):
 
     for word in graph_data[2:]:
         counter += 1
-        graph.addEdge(word[1], word[3],
-                      word[5:].replace(')', ''))
+        if is_graph:
+            graph.addEdge(word[3], word[1],
+                          word[5:].replace(')', ''))
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
+        else:
+            graph.addEdge(word[1], word[3],
+                          word[5:].replace(')', ''))
 
     return graph, counter
 
@@ -66,10 +73,39 @@ def print_shortest_path(graph):
     print('\nNumber of edges: {}'.format(len(path)-1))
 
 
-def dfs(graph):
-  pass
+def rescursive_dfs(graph, v):
+    result = [v]
+    visited = {}
+
+    def dfs(start):
+        current_vertex = result.pop()
+        visited[start] = True
+        vertex = graph.vertList[current_vertex]
+        for neighbor in vertex.neighbors:
+            if neighbor not in visited:
+                result.append(neighbor.getId())
+                dfs(neighbor.getId())
+    dfs(v)
+
+    return list(visited.keys())  # What is
+
+
+def dfs(graph, v):
+    vertexObj = graph.vertList[v]
+    stack = [vertexObj]
+    visited = {}
+
+    while len(stack):
+        vertex = stack.pop()
+        visited[vertex.getId()] = True
+
+        for neighbor in vertex.neighbors:
+            stack.append(neighbor)
+    return list(visited.keys())
 
 
 graph_data = parse_data()
 (graph, counter) = create_graph(graph_data)
-print(graph)
+# result = rescursive_dfs(graph, '1')
+result = dfs(graph, '1')
+print(result)

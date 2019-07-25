@@ -88,7 +88,7 @@ class Graph:
 
 
 def parse_data():
-    '''Enters'''
+    '''Takes a text file and turns the information into an array -> list'''
     vertices = open(argv[1], 'r')
     graph_data = vertices.read().split()
     vertices.close()
