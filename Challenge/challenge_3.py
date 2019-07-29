@@ -1,5 +1,5 @@
 from challenge_1 import Graph, Vertex, create_graph, parse_data
-
+from sys import argv
 
 '''Ask soul why are these giving different outputs'''
 
@@ -26,7 +26,13 @@ def DFS_recursive(self, v, v2):
     return (is_path, path[:end_path])
 
 
+def print_path_result(path, path_list):
+    print("There exist a path between vertex {} and {}: {}".format(
+        argv[2], argv[3], path))
+    print('Vertices in path: {}'.format((',').join(path_list)))
+
+
 graph_data = parse_data()
 graph = create_graph(graph_data)[0]
-result = DFS_recursive(graph, '1', '5')
-print(result)
+path, path_list = DFS_recursive(graph, '1', '5')
+print_path_result(path, path_list)
