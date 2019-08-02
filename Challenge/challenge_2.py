@@ -67,7 +67,6 @@ if __name__ == "__main__":
                     return visited
                 if neighbor.getId() not in visited:
                     queue.append((neighbor.getId()))
-
         return visited
 
     def print_shortest_path(graph):

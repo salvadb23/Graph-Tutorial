@@ -129,17 +129,34 @@ class Graph:
                     visited[vertex] = True
                     queue.append(neighbor)
 
-        return vertexObj
+        return list(visited.keys())
 
-    def find_shortest_path(self, vertexOne, vertexTwo):
+    def find_shortest_path(self, vertex_one, vertex_two):
         '''Finds the shortest path between two vertices'''
-        if vertexOne in self.vertList and vertexTwo in self.vertList:
-            return self.BFS(vertexOne)
+        queue = [(vertex_one, 0)]
+        visited = {}
+        path = []
+        while queue:
+            if vertex_two in visited:
+                break
+            vertex, parent = queue.pop(0)
+            if len(visited.keys()) is len(self.vertList):
+                break
+            if vertex not in visited:
+                visited[vertex] = parent
 
-        return KeyError('{} or {} was not in the graph'.format(vertexOne, vertexTwo))
+            for neighbor in self.vertList[vertex].neighbors:
+                if neighbor not in visited:
+                    queue.append((neighbor.getId(), vertex))
+
+        child = vertex_two
+        while vertex_one not in path:
+            path.append(child)
+            child = visited[child]
+        return path[::-1]
 
     def clique(self):
-        pass
+        
 
 
 if __name__ == "__main__":
@@ -213,5 +230,5 @@ if __name__ == "__main__":
     g.addEdge('Hannah', 'Ciara')
     g.addEdge('Ciara', 'Kyle')
 
-    result = g.find_shortest_path('William', 'Kyle')
+    result = g.find_shortest_path("William", "Kyle")
     print(result)
