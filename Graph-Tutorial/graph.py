@@ -6,6 +6,7 @@ A helper class for the Graph class that defines vertices and vertex neighbors.
 """
 
 from collections import deque
+import random
 
 
 class Vertex(object):
@@ -24,6 +25,10 @@ class Vertex(object):
         """add a neighbor along a weighted edge"""
         if (vertex not in self.neighbors):
             self.neighbors[vertex] = weight
+
+    def getNeighborsId(self):
+        """return the neighbors of this vertex"""
+        return [neighbor.getId() for neighbor in self.neighbors.keys()]
 
     def __str__(self):
         """output the list of neighbors of this vertex"""
@@ -155,8 +160,15 @@ class Graph:
             child = visited[child]
         return path[::-1]
 
-    def clique(self):
-        
+    def clique(self, vertex):
+        vertices = self.getVertices()
+        clique = set([vertex])
+        for v in vertices:
+            vertex = self.vertList[v]
+            neighbors = set(vertex.getNeighborsId())
+            if clique.issubset(neighbors):
+                clique.add(v)
+        return clique
 
 
 if __name__ == "__main__":
@@ -230,5 +242,5 @@ if __name__ == "__main__":
     g.addEdge('Hannah', 'Ciara')
     g.addEdge('Ciara', 'Kyle')
 
-    result = g.find_shortest_path("William", "Kyle")
+    result = g.clique('Salvador')
     print(result)
