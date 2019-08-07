@@ -54,11 +54,6 @@ class Graph:
         self.vertList = {}
         self.numVertices = 0
 
-    def __str__(self):
-        for item in self.vertList:
-            print(item)
-        return 'done'
-
     def addVertex(self, key):
         """add a new vertex object to the graph with
         the given key and return the vertex

@@ -121,8 +121,8 @@ def print_graph(graph, counter):
     print("Edge List:")
     for v in graph:
         for w in v.neighbors:
-            print("(%s ,%s, %s)" %
-                  (v.getId(), w.getId(), v.getEdgeWeight(w)))
+            print("(%s ,%s)" %
+                  (v.getId(), w.getId()))
 
 
 if __name__ == "__main__":
